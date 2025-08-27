@@ -8,12 +8,7 @@ const PORT = process.env.PORT || 5000;
 const server = express();
 
 // CORS: allow your Vercel domain + local dev
-const allowedOrigins = [
-  "https://reviews-dashboard-92a1.vercel.app", // ← ADD THIS EXACT URL
-  "https://reviews-dashboard-a9iy.vercel.app",  // ← AND THIS ONE (your previous deployment)
-  "http://localhost:5173",
-  "http://localhost:3000"
-];
+const allowedOrigins = "https://reviews-dashboard-92a1.vercel.app";
 
 server.use(cors({
   origin: (origin, cb) => {
