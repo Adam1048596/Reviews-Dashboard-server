@@ -9,15 +9,30 @@ const server = express();
 
 // CORS: allow your Vercel domain + local dev
 const allowedOrigins = [
-  process.env.FRONTEND_URL || "",       // e.g. https://your-app.vercel.app
-  "http://localhost:5173"
+  "https://reviews-dashboard-92a1.vercel.app", // ← ADD THIS EXACT URL
+  "https://reviews-dashboard-a9iy.vercel.app",  // ← AND THIS ONE (your previous deployment)
+  "http://localhost:5173",
+  "http://localhost:3000"
 ];
+
 server.use(cors({
   origin: (origin, cb) => {
+    // Allow requests with no origin (like mobile apps, Postman)
     if (!origin) return cb(null, true);
-    if (allowedOrigins.some(o => o && origin.startsWith(o))) return cb(null, true);
+    
+    // Check if the origin is in the allowed list
+    if (allowedOrigins.includes(origin)) {
+      return cb(null, true);
+    }
+    
+    // For subdomain matching (allows all *.vercel.app domains)
+    if (origin.endsWith('.vercel.app')) {
+      return cb(null, true);
+    }
+    
     return cb(new Error("CORS blocked by server"), false);
-  }
+  },
+  credentials: true
 }));
 server.use(express.json());
 
